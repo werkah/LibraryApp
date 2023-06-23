@@ -1,0 +1,14 @@
+@{
+    ViewData["Title"] = "User Dashboard";
+}
+@{
+    Layout = "~/Views/Shared/_LoggedLayout.cshtml";
+}
+
+<h1>Witaj użytkowniku!</h1>
+
+<p>Jesteś zalogowany jako użytkownik. Wypożycz książkę lub wyświetl ich listę.</p>
+
+<div>
+    <a href="@Url.Action("Logout", "Home")">Logout</a>
+</div>

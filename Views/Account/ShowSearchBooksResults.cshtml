@@ -1,0 +1,66 @@
+@model List<Book>
+
+@{
+    Layout = "~/Views/Shared/_LoggedLayout.cshtml";
+}
+@{
+    ViewData["Title"] = "Search Results";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (Model.Count > 0)
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Book ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Category ID</th>
+                <th>Category Name</th>
+                <th>Availability</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model)
+            {
+                <tr>
+                    <td>@book.BookId</td>
+                    <td>@book.Title</td>
+                    <td>@book.Author</td>
+                    <td>@book.CategoryId</td>
+                    <td>@(book.Category?.Name)</td>
+                    <td>@(book.Available ? "Available" : "Not Available")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div>
+        <h4>Category with the most books:</h4>
+        @{
+            var categoriesWithBooks = Model.GroupBy(b => b.CategoryId) //ponranie ksiazek z kat
+                                           .Select(g => new { CategoryId = g.Key, BookCount = g.Count() })
+                                           .OrderByDescending(c => c.BookCount)
+                                           .ToList();
+            if (categoriesWithBooks.Any())
+            {
+                var categoryWithMostBooks = categoriesWithBooks.First();
+                var category = Model.FirstOrDefault(b => b.CategoryId == categoryWithMostBooks.CategoryId)?.Category;
+                <p>Category ID: @category.CategoryId, Name: @category.Name, Books: @categoryWithMostBooks.BookCount</p>
+            }
+            else
+            {
+                <p>No books found.</p>
+            }
+        }
+    </div>
+}
+else
+{
+    <p>No books found.</p>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

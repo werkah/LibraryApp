@@ -1,0 +1,14 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Witaj admin!</h1>
+
+<p>Jesteś zalogowany jako admin. Zarządzaj użytkownikami oraz biblioteką.</p>
+
+<div>
+    <a href="@Url.Action("Logout", "Home")">Logout</a>
+</div>
